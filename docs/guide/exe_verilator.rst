@@ -817,6 +817,11 @@ Summary:
    If the design is not to be completely Verilated, see also the
    :vlopt:`--bbox-sys` and :vlopt:`--bbox-unsup` options.
 
+.. option:: --localize-max-size <value>
+
+   Rarely needed.  Set the maximum variable size in bytes for it to be
+   subject to localizing-to-stack optimization.  Defaults to 1024.
+
 .. option:: --make <build-tool>
 
    Generates a script for the specified build tool.
@@ -1739,9 +1744,9 @@ Summary:
 
    .. note::
 
-      This option applies only to values explicitly written as X
-      in modules (not classes) in the Verilog source code. Initial values
-      of clocks are set to 0 unless `--x-initial-edge` is
+      This option applies only to values explicitly written as X in modules
+      (not classes, nor parameters) in the Verilog source code. Initial
+      values of clocks are set to 0 unless `--x-initial-edge` is
       specified. Initial values of all other state holding variables are
       controlled with `--x-initial`.
 

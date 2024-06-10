@@ -40,6 +40,7 @@ Brej
 Briquet
 Brownlee
 Buckenmaier
+Burghoorn
 Bybell
 CLang
 CMake
@@ -131,6 +132,7 @@ Gernot
 Gerst
 Gielda
 Gigerl
+Gijs
 Gileadi
 Giri
 Gisselquist
@@ -164,6 +166,7 @@ Homebrew
 Hornung
 Hossell
 Hsu
+Huggett
 Hutt
 Hyperthreading
 Ibrahim
@@ -842,6 +845,7 @@ parallelized
 param
 parameterization
 parameterized
+parameterless
 params
 parens
 pawel
@@ -968,6 +972,7 @@ submakes
 submodule
 submodules
 substring
+suspendable
 sv
 svBitVal
 svBitVecVal
@@ -978,6 +983,7 @@ svLogicVal
 svdpi
 svgGetTimeUnit
 swrite
+synthesizeable
 sys
 systemc
 tenghtt
@@ -996,6 +1002,7 @@ toolchain
 topcell
 toplevel
 toupper
+traceCapable
 traceEverOn
 tran
 treei
@@ -1060,6 +1067,7 @@ vluint
 vpi
 vpiConstType
 vpiDefName
+vpiInertialDelay
 vpiInstance
 vpiLeftRange
 vpiModule

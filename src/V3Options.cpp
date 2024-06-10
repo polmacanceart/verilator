@@ -493,7 +493,10 @@ string V3Options::fileExists(const string& filename) {
         try {
             for (const auto& dirEntry : std::filesystem::directory_iterator(dir.c_str()))
                 setp->insert(dirEntry.path().filename().string());
-        } catch (std::filesystem::filesystem_error const& ex) { return ""; }
+        } catch (std::filesystem::filesystem_error const& ex) {
+            (void)ex;
+            return "";
+        }
 #else
         if (DIR* const dirp = opendir(dir.c_str())) {
             while (struct dirent* direntp = readdir(dirp)) setp->insert(direntp->d_name);
@@ -748,6 +751,18 @@ string V3Options::getenvVERILATOR_ROOT() {
     }
     if (var == "") v3fatal("$VERILATOR_ROOT needs to be in environment\n");
     return V3Os::filenameCleanup(var);
+}
+
+string V3Options::getenvVERILATOR_SOLVER() {
+    string var = V3Os::getenvStr("VERILATOR_SOLVER", "");
+    // Treat compiled-in DEFENV string literals as C-strings to enable
+    // binary patching for relocatable installs (e.g. conda)
+    string defenv = string{DEFENV_VERILATOR_SOLVER}.c_str();
+    if (var == "" && defenv != "") {
+        var = defenv;
+        V3Os::setenvStr("VERILATOR_SOLVER", var, "Hardcoded at build time");
+    }
+    return var;
 }
 
 string V3Options::getStdPackagePath() {
@@ -1307,6 +1322,9 @@ void V3Options::parseOptsList(FileLine* fl, const string& optdir, int argc,
     });
 
     DECL_OPTION("-LDFLAGS", CbVal, callStrSetter(&V3Options::addLdLibs));
+    DECL_OPTION("-l2-name", Set, &m_l2Name);
+    DECL_OPTION("-no-l2name", CbCall, [this]() { m_l2Name = ""; }).undocumented();  // Historical
+    DECL_OPTION("-l2name", CbCall, [this]() { m_l2Name = "v"; }).undocumented();  // Historical
     const auto setLang = [this, fl](const char* valp) {
         const V3LangCode optval{valp};
         if (optval.legal()) {
@@ -1323,9 +1341,7 @@ void V3Options::parseOptsList(FileLine* fl, const string& optdir, int argc,
     DECL_OPTION("-language", CbVal, setLang);
     DECL_OPTION("-lib-create", Set, &m_libCreate);
     DECL_OPTION("-lint-only", OnOff, &m_lintOnly);
-    DECL_OPTION("-l2-name", Set, &m_l2Name);
-    DECL_OPTION("-no-l2name", CbCall, [this]() { m_l2Name = ""; }).undocumented();  // Historical
-    DECL_OPTION("-l2name", CbCall, [this]() { m_l2Name = "v"; }).undocumented();  // Historical
+    DECL_OPTION("-localize-max-size", Set, &m_localizeMaxSize);
     DECL_OPTION("-main-top-name", Set, &m_mainTopName);
 
     DECL_OPTION("-MAKEFLAGS", CbVal, callStrSetter(&V3Options::addMakeFlags));
